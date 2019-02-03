@@ -37,16 +37,69 @@ Features Implemented
 -------------
 1. A functional memory.
 1. An elf loader which can load program from an elf file.
+1. Very limited HTIF support for running
+   [riscv-tests](https://github.com/riscv/riscv-tests/),
+   can resolve 'fromhost' and 'tohost' symbols. Writing a 1 to memory
+   address indicated by 'tohost' will cause YARC print "PASS!!!" and
+   exit with code 0, write numbers other than 1 will cause YARC exit
+   with 1.
 1. A processor that reads instructions and executes them.
-1. Arithmetic, branch and jump instructions.
+1. All unprivileged instructions.
+1. Control and Status Register function and related instructions (But
+ not all CSRs defined in the spec are implemented, see CSRs Section)
+1. Machine, Supervisor, and Machine Privileges
+1. Exceptions support
 
 Features To Be Implemented
 -------------
-1. Control and Status Registers (CSRs) and related instructions
-1. Privileges
-1. Exception and interruption
-1. Memory related instructions (LOAD, STORE, FENCE)
+1. Support interruption
 1. Detailed annotations
+
+CSRs
+-------------
+Accessible CSRs
+_____________
+Access CSRs other than these will cause a panic.
+* misa
+* mvendorid
+* marchid
+* mimpid
+* mhartid
+* mstatus
+* mtvec
+* medeleg
+* mideleg
+* mie
+* mcause
+* mepc
+* stvec
+* sepc
+* scause
+* stval
+* mtval
+* satp
+* pmpaddr0
+* pmpcfg0
+
+Really functional CSRs
+____________
+* misa
+* mvendorid
+* marchid
+* mimpid
+* mhartid
+* mstatus
+* mtvec - only support direct mode
+* medeleg
+* mideleg
+* mie
+* mcause
+* mepc
+* stvec
+* sepc
+* scause
+* stval
+* mtval
 
 References
 -------------

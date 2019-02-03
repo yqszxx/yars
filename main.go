@@ -19,25 +19,37 @@ func main() {
 		os.Exit(1)
 	}
 
-	var ram mem.Memory        // the main memory
-	ram.Init()                // init main memory
-	loadElf(os.Args[1], &ram) // load executable to main memory
-	log.Print(ram)            // log the content of memory
+	var ram mem.Memory                            // the main memory
+	ram.Init()                                    // init main memory
+	fromhost, tohost := loadElf(os.Args[1], &ram) // load executable to main memory
+	log.Print(ram)                                // log the content of memory
+	mem.SetHtif(fromhost, tohost)
 
 	var regs reg.RegisterFile
-	regs.Init(32) // RV64I has 32 integer registers
 
-	var is = instruction.InstructionSet // the instruction set
+	var csrs reg.CsrFile
+	csrs.Init()
 
-	var pc reg.ProgramCounter                                            // the program counter register
-	pc.WriteInt(0x80000000)                                              // set program entry point to 0x80000000, the same as spike
-	core := processor.Processor{Pc: &pc, Reg: &regs, Mem: &ram, Is: &is} // generate one processing core
+	iss := instruction.InstructionSet // the instruction set
+
+	var pc reg.ProgramCounter // the program counter register
+	pc.Init()
+
+	core := processor.Processor{
+		Pc:  &pc,
+		Reg: &regs,
+		Csr: &csrs,
+		Mem: &ram,
+		Iss: &iss,
+	} // generate one processing core
+
+	core.Reset() // reset on power on
 
 	core.Run() // fire the core
 }
 
 // read all loadable segment to main memory from an elf file
-func loadElf(filename string, mem *mem.Memory) {
+func loadElf(filename string, mem *mem.Memory) (uint64, uint64) {
 	_elf, err := elf.Open(filename)
 	if err != nil { // if we have problem opening the elf file...
 		log.Panicf("Error opening executable file '%s', reason: %s", filename, err)
@@ -71,4 +83,15 @@ func loadElf(filename string, mem *mem.Memory) {
 			}
 		}
 	}
+	var fromhost, tohost uint64
+	symbols, _ := _elf.Symbols()
+	for _, v := range symbols {
+		if v.Name == "fromhost" {
+			fromhost = v.Value
+		}
+		if v.Name == "tohost" {
+			tohost = v.Value
+		}
+	}
+	return fromhost, tohost
 }

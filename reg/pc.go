@@ -5,32 +5,24 @@ import (
 	"yars/bv"
 )
 
-type ProgramCounter uint64
-
-func (pc ProgramCounter) ReadInt() uint64 {
-	return uint64(pc)
+type ProgramCounter struct {
+	data bv.BitVector
 }
 
-func (pc *ProgramCounter) WriteInt(data uint64) {
-	*pc = ProgramCounter(data)
+func (pc *ProgramCounter) Init() {
+	pc.data = bv.Bv(64)
 }
 
 func (pc ProgramCounter) Read() bv.BitVector {
-	_pcInt := pc.ReadInt()
+	log.Printf("Reading pc: 0x%016X", pc.data.ToUint64())
 
-	newBv := bv.Bv(64)
-	newBv.From(_pcInt)
-
-	log.Printf("Reading pc: 0x%016X", _pcInt)
-
-	return newBv
+	return pc.data
 }
 
-func (pc *ProgramCounter) Write(data bv.BitVector) {
-	if data.Width != 64 {
-		panic("Cannot write PC with a bv width is not 64.")
+func (pc *ProgramCounter) Write(value bv.BitVector) {
+	if value.Width != 64 {
+		panic("Cannot call ProgramCounter.Write with value not being a 64 bits bv.")
 	}
-	_data := data.ToUint64()
-	log.Printf("Writing pc: 0x%016X", _data)
-	pc.WriteInt(_data)
+	log.Printf("Writing pc: 0x%016X", value.ToUint64())
+	pc.data = value
 }

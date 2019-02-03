@@ -39,6 +39,10 @@ func (bv *BitVector) Reset(pos int) {
 	bv.bits[pos] = false
 }
 
+func (bv *BitVector) Test(pos int) bool {
+	return bv.bits[pos]
+}
+
 func (bv BitVector) SignExtendTo(width uint) BitVector {
 	if width < uint(len(bv.bits)) {
 		panic("Cannot call SignExtendTo with width < origin width")
@@ -58,6 +62,12 @@ func (bv BitVector) SignExtendTo(width uint) BitVector {
 func (bv BitVector) Sub(hi int, lo int) BitVector {
 	if hi < lo {
 		panic("BV.Sub must be called with hi > lo.")
+	}
+	if uint(hi) > bv.Width {
+		panic("BV.Sub is called with hi > Width.")
+	}
+	if uint(lo) > bv.Width {
+		panic("BV.Sub is called with lo > Width.")
 	}
 	newBv := Bv(uint(hi - lo + 1))
 	for i := hi - lo; i >= 0; i-- {
@@ -89,6 +99,10 @@ func (bv BitVector) Equal(_bv BitVector, strict bool) bool {
 func (bv *BitVector) From(i interface{}) {
 	var _i uint64
 	switch v := i.(type) {
+	case uint16:
+		_i = uint64(v)
+	case int:
+		_i = uint64(uint(v))
 	case uint32:
 		_i = uint64(v)
 	case uint64:
