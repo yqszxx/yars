@@ -8,7 +8,7 @@ import (
 // AND performs bitwise AND logical operation.
 var AND = Instruction{
 	name:    "AND",
-	pattern: bv.P("0000000 XXXXX XXXXX 100 XXXXX 0110011"),
+	pattern: bv.P("0000000 XXXXX XXXXX 111 XXXXX 0110011"),
 	operation: func(_inst *Instruction) {
 		log.Printf("Decoding as AND x%d, x%d, x%d",
 			_inst.rd.ToUint64(),
