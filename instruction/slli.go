@@ -12,14 +12,14 @@ var SLLI = Instruction{
 	pattern: bv.P("000000 XXXXXX XXXXX 001 XXXXX 0010011"),
 	operation: func(_inst *Instruction) {
 		log.Printf("Decoding as SLLI x%d, x%d, %d",
-			_inst.rd.ToUint64(),
-			_inst.rs1.ToUint64(),
-			_inst.shamt.ToUint64())
+			_inst.rd.ToUint32(),
+			_inst.rs1.ToUint32(),
+			_inst.shamt.ToUint32())
 
 		op1 := _inst.p.ReadReg(_inst.rs1)             // first operator of alu
 		op2 := _inst.shamt                            // second operator of alu
-		result := bv.Bv(64)                           // will hold the result of alu
-		result.From(op1.ToUint64() << op2.ToUint64()) // perform computation
+		result := bv.Bv(32)                           // will hold the result of alu
+		result.From(op1.ToUint32() << op2.ToUint32()) // perform computation
 		_inst.p.WriteReg(_inst.rd, result)            // write result back to rd
 	},
 }

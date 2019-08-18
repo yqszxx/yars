@@ -10,19 +10,19 @@ type ProgramCounter struct {
 }
 
 func (pc *ProgramCounter) Init() {
-	pc.data = bv.Bv(64)
+	pc.data = bv.Bv(32)
 }
 
 func (pc ProgramCounter) Read() bv.BitVector {
-	log.Printf("Reading pc: 0x%016X", pc.data.ToUint64())
+	log.Printf("Reading pc: 0x%08X", pc.data.ToUint32())
 
 	return pc.data
 }
 
 func (pc *ProgramCounter) Write(value bv.BitVector) {
-	if value.Width != 64 {
-		panic("Cannot call ProgramCounter.Write with value not being a 64 bits bv.")
+	if value.Width != 32 {
+		panic("Cannot call ProgramCounter.Write with value not being a 32 bits bv.")
 	}
-	log.Printf("Writing pc: 0x%016X", value.ToUint64())
+	log.Printf("Writing pc: 0x%08X", value.ToUint32())
 	pc.data = value
 }

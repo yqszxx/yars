@@ -19,16 +19,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	var ram mem.Memory                            // the main memory
-	ram.Init()                                    // init main memory
-	fromhost, tohost := loadElf(os.Args[1], &ram) // load executable to main memory
-	log.Print(ram)                                // log the content of memory
-	mem.SetHtif(fromhost, tohost)
+	var ram mem.Memory        // the main memory
+	ram.Init()                // init main memory
+	loadElf(os.Args[1], &ram) // load executable to main memory
+	log.Print(ram)            // log the content of memory
 
 	var regs reg.RegisterFile
-
-	var csrs reg.CsrFile
-	csrs.Init()
 
 	iss := instruction.InstructionSet // the instruction set
 
@@ -38,7 +34,6 @@ func main() {
 	core := processor.Processor{
 		Pc:  &pc,
 		Reg: &regs,
-		Csr: &csrs,
 		Mem: &ram,
 		Iss: &iss,
 	} // generate one processing core
@@ -49,7 +44,7 @@ func main() {
 }
 
 // read all loadable segment to main memory from an elf file
-func loadElf(filename string, mem *mem.Memory) (uint64, uint64) {
+func loadElf(filename string, mem *mem.Memory) {
 	_elf, err := elf.Open(filename)
 	if err != nil { // if we have problem opening the elf file...
 		log.Panicf("Error opening executable file '%s', reason: %s", filename, err)
@@ -78,20 +73,9 @@ func loadElf(filename string, mem *mem.Memory) (uint64, uint64) {
 					case 3:
 						mask = 0x08
 					}
-					mem.WriteInt(address & ^uint64(3), mask, uint32(data)<<((address&3)*8)) // write our 1 byte of data into main memory
+					mem.WriteInt(uint32(address) & ^uint32(3), mask, uint32(data)<<((address&3)*8)) // write our 1 byte of data into main memory
 				}
 			}
 		}
 	}
-	var fromhost, tohost uint64
-	symbols, _ := _elf.Symbols()
-	for _, v := range symbols {
-		if v.Name == "fromhost" {
-			fromhost = v.Value
-		}
-		if v.Name == "tohost" {
-			tohost = v.Value
-		}
-	}
-	return fromhost, tohost
 }

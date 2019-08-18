@@ -20,8 +20,8 @@ func Bv(width uint) BitVector {
 	return newBv
 }
 
-func (bv BitVector) ToUint64() uint64 {
-	var n uint64
+func (bv BitVector) ToUint32() uint32 {
+	var n uint32
 	for i := len(bv.bits) - 1; i >= 0; i-- {
 		n <<= 1
 		if bv.bits[i] {
@@ -97,21 +97,19 @@ func (bv BitVector) Equal(_bv BitVector, strict bool) bool {
 }
 
 func (bv *BitVector) From(i interface{}) {
-	var _i uint64
+	var _i uint32
 	switch v := i.(type) {
 	case uint16:
-		_i = uint64(v)
+		_i = uint32(v)
 	case int:
-		_i = uint64(uint(v))
+		_i = uint32(uint(v))
 	case uint32:
-		_i = uint64(v)
-	case uint64:
 		_i = v
 	case bool:
 		bv.bits[0] = v
 		return
 	default:
-		log.Panicf("Unable to convert %T to uint64.\n", i)
+		log.Panicf("Unable to convert %T to uint32.\n", i)
 	}
 	var j uint32
 	for j = 0; j < uint32(len(bv.bits)); j++ {
@@ -158,7 +156,7 @@ func (bv BitVector) String() string {
 //		w = 8
 //	}
 //	format := fmt.Sprintf("0x%%0%dX of width %%d", w)
-//	return fmt.Sprintf(format, bv.ToUint64(), bv.Width)
+//	return fmt.Sprintf(format, bv.ToUint32(), bv.Width)
 //}
 
 func B(s string) BitVector {

@@ -14,14 +14,14 @@ var SRAI = Instruction{
 	pattern: bv.P("010000 XXXXXX XXXXX 101 XXXXX 0010011"),
 	operation: func(_inst *Instruction) {
 		log.Printf("Decoding as SRAI x%d, x%d, %d",
-			_inst.rd.ToUint64(),
-			_inst.rs1.ToUint64(),
-			_inst.shamt.ToUint64())
+			_inst.rd.ToUint32(),
+			_inst.rs1.ToUint32(),
+			_inst.shamt.ToUint32())
 
 		op1 := _inst.p.ReadReg(_inst.rs1)                            // first operator of alu
 		op2 := _inst.shamt                                           // second operator of alu
-		result := bv.Bv(64)                                          // will hold the result of alu
-		result.From(uint64(int64(op1.ToUint64()) >> op2.ToUint64())) // perform computation
+		result := bv.Bv(32)                                          // will hold the result of alu
+		result.From(uint64(int64(op1.ToUint32()) >> op2.ToUint32())) // perform computation
 		_inst.p.WriteReg(_inst.rd, result)                           // write result back to rd
 	},
 }

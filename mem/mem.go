@@ -13,57 +13,43 @@ type memoryCell struct {
 }
 
 type Memory struct {
-	data map[uint64]memoryCell
+	data map[uint32]memoryCell
 }
 
 // since this memory can only accessed with address aligned to 4 bytes,
 // key represents high 62 bits of address
 
-var fromhost, tohost uint64
-
-func SetHtif(_fromhost uint64, _tohost uint64) {
-	fromhost = _fromhost
-	tohost = _tohost
-}
-
-func (mem *Memory) ReadInt(address uint64) (uint32, bool) {
-	if address%4 != 0 {
-		return 0, true
-	}
+func (mem *Memory) ReadInt(address uint32) uint32 {
 	data := mem.data[address>>2].value
-	return data, false
+	return data
 }
 
-func (mem *Memory) Read(address bv.BitVector) (bv.BitVector, bv.BitVector) {
-	_address := address.ToUint64()
+func (mem *Memory) Read(address bv.BitVector) bv.BitVector {
+	_address := address.ToUint32()
 
-	log.Printf("Reading memory address: 0x%016X", _address)
+	log.Printf("Reading memory address: 0x%08X", _address)
 
-	data, exception := mem.ReadInt(_address)
+	data := mem.ReadInt(_address)
 	dataBv := bv.Bv(32)
 	dataBv.From(data)
-	exceptionBv := bv.Bv(1)
-	exceptionBv.From(exception)
 
-	log.Printf("with data 0x%08X and exception %v", data, exception)
+	log.Printf("with data 0x%08X", data)
 
-	return dataBv, exceptionBv
+	return dataBv
 }
 
-func (mem *Memory) WriteInt(address uint64, mask uint8, data uint32) bool {
-	if address%4 != 0 {
-		return true
+func (mem *Memory) WriteInt(address uint32, mask uint8, data uint32) {
+
+	// Print Logic
+	if address == 0xFFF8 {
+		fmt.Printf("$0x%08X$\n", data)
+		return
 	}
 
-	if address == tohost {
-		if data == 1 {
-			log.Printf("PASS!!!")
-			os.Exit(0)
-		} else {
-			testCase := data >> 1
-			log.Printf("FAIL!!! case:%d", testCase)
-			os.Exit(-1)
-		}
+	// Done Logic
+	if address == 0xFFFC {
+		fmt.Printf("!!!!!!!!!!!!!!!!!!!DONE#0x%08X#!!!!!!!!!!!!!!!!!!!\n", data)
+		os.Exit(0)
 	}
 
 	var _mask uint32
@@ -75,12 +61,11 @@ func (mem *Memory) WriteInt(address uint64, mask uint8, data uint32) bool {
 		}
 	}
 	mem.data[address>>2] = memoryCell{value: data | (^_mask & mem.data[address>>2].value)}
-	return false
 }
 
-func (mem *Memory) Write(address bv.BitVector, mask bv.BitVector, data bv.BitVector) bv.BitVector {
-	if address.Width != 64 {
-		log.Panic("Cannot call Memory.Write with address not being a 64 bits bv")
+func (mem *Memory) Write(address bv.BitVector, mask bv.BitVector, data bv.BitVector) {
+	if address.Width != 32 {
+		log.Panic("Cannot call Memory.Write with address not being a 32 bits bv")
 	}
 	if mask.Width != 4 {
 		log.Panic("Cannot call Memory.Write with mask not being a 4 bits bv")
@@ -88,34 +73,33 @@ func (mem *Memory) Write(address bv.BitVector, mask bv.BitVector, data bv.BitVec
 	if data.Width != 32 {
 		log.Panic("Cannot call Memory.Write with data not being a 32 bits bv")
 	}
-	_address := address.ToUint64()
-	_mask := uint8(mask.ToUint64())
-	_data := uint32(data.ToUint64())
+	_address := address.ToUint32()
+	_mask := uint8(mask.ToUint32())
+	_data := uint32(data.ToUint32())
 
-	log.Printf("Writing memory: 0x%016X <- 0x%08X with mask %s", _address, _data, mask)
+	mem.WriteInt(_address, _mask, _data)
 
-	exception := mem.WriteInt(_address, _mask, _data)
-	exceptionBv := bv.Bv(1)
-	exceptionBv.From(exception)
-
-	log.Printf("with exception %v", exception)
-
-	return exceptionBv
+	log.Printf("Writing memory: 0x%08X <- 0x%08X with mask %s", _address, _data, mask)
 }
 
 func (mem *Memory) Init() {
-	mem.data = make(map[uint64]memoryCell)
+	mem.data = make(map[uint32]memoryCell)
 }
 
 func (mem Memory) String() string {
 	s := "Dumping memory\n"
-	var keys []uint64
+	var keys []uint32
 	for k := range mem.data {
 		keys = append(keys, k)
 	}
 	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
 	for _, k := range keys {
-		s = fmt.Sprintf("%sM:0x%016X->0x%08X\n", s, k<<2, mem.data[k].value)
+		s = fmt.Sprintf("%sM:0x%08X -> 0x%08X\n", s, k<<2, mem.data[k].value)
 	}
+	s = fmt.Sprintf("%s+========\n", s)
+	for _, k := range keys {
+		s = fmt.Sprintf("%s%08X\n", s, mem.data[k].value)
+	}
+	s = fmt.Sprintf("%s-========\n", s)
 	return s
 }

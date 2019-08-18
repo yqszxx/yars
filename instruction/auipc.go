@@ -11,14 +11,14 @@ var AUIPC = Instruction{
 	name:    "AUIPC",
 	pattern: bv.P("XXXXXXXXXXXXXXXXXXXX XXXXX 0010111"),
 	operation: func(_inst *Instruction) {
-		op1 := bv.Cat(_inst.uImm, bv.B("0000 0000 0000")).SignExtendTo(64) // appends 12 low-order zero bits to the 20-bit U-immediate and sign extends to 64 bit
+		op1 := bv.Cat(_inst.uImm, bv.B("0000 0000 0000"))
 
 		log.Printf("Decoding as AUIPC x%d, %d",
-			_inst.rd.ToUint64(),
-			_inst.uImm.ToUint64())
+			_inst.rd.ToUint32(),
+			_inst.uImm.ToUint32())
 
-		result := bv.Bv(64)                                       // will hold the result
-		result.From(op1.ToUint64() + _inst.p.ReadPc().ToUint64()) // adds op1 to the pc
+		result := bv.Bv(32)                                       // will hold the result
+		result.From(op1.ToUint32() + _inst.p.ReadPc().ToUint32()) // adds op1 to the pc
 		_inst.p.WriteReg(_inst.rd, result)                        // places the result in register rd
 	},
 }
