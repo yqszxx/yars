@@ -12,7 +12,6 @@ type Instruction struct {
 	operation func(_inst *Instruction)
 	iImm      bv.BitVector
 	shamt     bv.BitVector
-	shamtw    bv.BitVector
 	sImm      bv.BitVector
 	bImm      bv.BitVector
 	uImm      bv.BitVector
