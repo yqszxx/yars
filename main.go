@@ -26,6 +26,7 @@ func main() {
 	mem.SetHtif(fromhost, tohost)
 
 	var regs reg.RegisterFile
+	regs.Init()
 
 	var csrs reg.CsrFile
 	csrs.Init()
