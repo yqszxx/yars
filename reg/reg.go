@@ -9,6 +9,12 @@ type RegisterFile struct {
 	data [32]bv.BitVector // yarc has 32 integer registers
 }
 
+func (reg *RegisterFile) Init() {
+	for i := 1; i < 32; i++ {
+		reg.data[i] = bv.Bv(32)
+	}
+}
+
 func (reg *RegisterFile) Read(n bv.BitVector) bv.BitVector {
 	_n := int(n.ToUint32())
 

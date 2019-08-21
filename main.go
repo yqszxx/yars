@@ -25,6 +25,7 @@ func main() {
 	log.Print(ram)            // log the content of memory
 
 	var regs reg.RegisterFile
+	regs.Init()
 
 	iss := instruction.InstructionSet // the instruction set
 
