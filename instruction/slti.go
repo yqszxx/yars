@@ -19,7 +19,7 @@ var SLTI = Instruction{
 		op1 := _inst.p.ReadReg(_inst.rs1)                  // first operator of alu
 		op2 := _inst.iImm.SignExtendTo(32)                 // second operator of alu
 		result := bv.Bv(32)                                // will hold the result of alu
-		if int64(op1.ToUint32()) < int64(op2.ToUint32()) { // if signed_int(r1) < signed_int(sign_extend(iImm))
+		if int32(op1.ToUint32()) < int32(op2.ToUint32()) { // if signed_int(r1) < signed_int(sign_extend(iImm))
 			result.Set(0) // result = 1
 		} // else result = 0
 		_inst.p.WriteReg(_inst.rd, result) // write result back to rd

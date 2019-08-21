@@ -18,7 +18,7 @@ var SLT = Instruction{
 		op1 := _inst.p.ReadReg(_inst.rs1)                  // first operator of alu
 		op2 := _inst.p.ReadReg(_inst.rs2)                  // second operator of alu
 		result := bv.Bv(32)                                // will hold the result of alu
-		if int64(op1.ToUint32()) < int64(op2.ToUint32()) { // if signed_int(r1) < signed_int(r2)
+		if int32(op1.ToUint32()) < int32(op2.ToUint32()) { // if signed_int(r1) < signed_int(r2)
 			result.Set(0) // result = 1
 		} // else result = 0
 		_inst.p.WriteReg(_inst.rd, result) // write result back to rd

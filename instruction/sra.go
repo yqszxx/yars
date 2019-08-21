@@ -19,7 +19,7 @@ var SRA = Instruction{
 		op1 := _inst.p.ReadReg(_inst.rs1)                            // first operator of alu
 		op2 := _inst.p.ReadReg(_inst.rs2).Sub(5, 0)                  // second operator of alu
 		result := bv.Bv(32)                                          // will hold the result of alu
-		result.From(uint64(int64(op1.ToUint32()) >> op2.ToUint32())) // perform computation
+		result.From(uint32(int32(op1.ToUint32()) >> op2.ToUint32())) // perform computation
 		_inst.p.WriteReg(_inst.rd, result)                           // write result back to rd
 	},
 }
