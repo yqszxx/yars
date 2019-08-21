@@ -29,7 +29,7 @@ var BLTU = Instruction{
 		op2 := _inst.p.ReadReg(_inst.rs2)
 
 		if op1.ToUint32() < op2.ToUint32() { // if unsigned_int(rs1) < unsigned_int(rs2), takes branch
-			npc := bv.Bv(64)                                                // npc holds the jump target address
+			npc := bv.Bv(32)                                                // npc holds the jump target address
 			npc.From(targetOffset.ToUint32() + _inst.p.ReadPc().ToUint32()) // the jump target address is formed by adding targetOffset to the pc
 			_inst.p.WritePc(npc)                                            // set the jump target address
 		}

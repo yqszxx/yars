@@ -22,7 +22,7 @@ var JALR = Instruction{
 		op2 := _inst.p.ReadReg(_inst.rs1)  // fetch op2 from rs1
 
 		tmp := _inst.p.GetNpc()                   // tmp holds the address of the instruction following the jump (pc+4)
-		npc := bv.Bv(64)                          // npc holds the jump target address
+		npc := bv.Bv(32)                          // npc holds the jump target address
 		npc.From(op1.ToUint32() + op2.ToUint32()) // the jump target address is formed by adding iImm to the value of rs1
 		npc.Reset(0)                              // setting the least-significant bit of the result to zero.
 		_inst.p.WritePc(npc)                      // set the jump target address

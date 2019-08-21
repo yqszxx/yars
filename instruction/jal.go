@@ -27,7 +27,7 @@ var JAL = Instruction{
 			targetOffset)
 
 		tmp := _inst.p.GetNpc()                                // tmp holds the address of the instruction following the jump (pc+4)
-		npc := bv.Bv(64)                                       // npc holds the jump target address
+		npc := bv.Bv(32)                                       // npc holds the jump target address
 		npc.From(op1.ToUint32() + _inst.p.ReadPc().ToUint32()) // the jump target address is formed by adding op1 to the pc
 		_inst.p.WritePc(npc)                                   // set the jump target address
 		_inst.p.WriteReg(_inst.rd, tmp)                        // write result back to rd
