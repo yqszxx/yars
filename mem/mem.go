@@ -6,6 +6,7 @@ import (
 	"os"
 	"sort"
 	"yars/bv"
+	"yars/prof"
 )
 
 type memoryCell struct {
@@ -49,6 +50,7 @@ func (mem *Memory) WriteInt(address uint32, mask uint8, data uint32) {
 	// Done Logic
 	if address == 0xFFFC {
 		fmt.Printf("!!!!!!!!!!!!!!!!!!!DONE#0x%08X#!!!!!!!!!!!!!!!!!!!\n", data)
+		prof.Pr.Print()
 		os.Exit(0)
 	}
 

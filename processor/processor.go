@@ -6,6 +6,7 @@ import (
 	"yars/instruction"
 	"yars/intf"
 	"yars/mem"
+	"yars/prof"
 	"yars/reg"
 )
 
@@ -41,6 +42,7 @@ func (p *Processor) Run() {
 func (p *Processor) Decode(inst bv.BitVector) {
 	for _, _inst := range *(p.Iss) { // loop through every instruction in the instruction set (ISS for short)
 		if _inst.Match(inst) { // if current fetched instruction is matched one of the instructions from the IS
+			prof.Pr.Instruction(_inst.GetName())
 			_inst.Exec(p) // then execute this matched instruction
 			return        // ignore rest of instructions in the instruction set
 			// because only one instruction in the IS can match current fetched instruction

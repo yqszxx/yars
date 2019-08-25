@@ -49,3 +49,7 @@ func (_inst *Instruction) Exec(p intf.ProcessorInterface) {
 	_inst.p = p
 	_inst.operation(_inst)
 }
+
+func (_inst *Instruction) GetName() string {
+	return _inst.name
+}

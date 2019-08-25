@@ -8,6 +8,7 @@ import (
 	"yars/instruction"
 	"yars/mem"
 	"yars/processor"
+	"yars/prof"
 	"yars/reg"
 )
 
@@ -18,6 +19,8 @@ func main() {
 		fmt.Println("Usage: yars elf_file")
 		os.Exit(1)
 	}
+
+	prof.Pr.Init() // Init profiler
 
 	var ram mem.Memory        // the main memory
 	ram.Init()                // init main memory
