@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"yars/instruction"
 	"yars/mem"
 	"yars/processor"
@@ -16,7 +17,7 @@ func main() {
 	log.SetFlags(log.Lshortfile) // only show file name and line number
 
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: yars elf_file")
+		fmt.Println("Usage: yars elf_file [d]")
 		os.Exit(1)
 	}
 
@@ -26,6 +27,10 @@ func main() {
 	ram.Init()                // init main memory
 	loadElf(os.Args[1], &ram) // load executable to main memory
 	log.Print(ram)            // log the content of memory
+
+	if len(os.Args) > 2 && strings.Contains(os.Args[2], "d") { // dump only
+		os.Exit(0)
+	}
 
 	var regs reg.RegisterFile
 	regs.Init()

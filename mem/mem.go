@@ -2,6 +2,7 @@ package mem
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"sort"
@@ -41,6 +42,16 @@ func (mem *Memory) Read(address bv.BitVector) bv.BitVector {
 
 func (mem *Memory) WriteInt(address uint32, mask uint8, data uint32) {
 
+	// GPIO Logic
+	if address>>24 == 0xFE {
+		if data&1 == 1 {
+			fmt.Printf("!HIGH!\n")
+		} else {
+			fmt.Printf("!LOW!\n")
+		}
+		return
+	}
+
 	// Print Logic
 	if address == 0xFFF8 {
 		fmt.Printf("$0x%08X$\n", data)
@@ -48,7 +59,7 @@ func (mem *Memory) WriteInt(address uint32, mask uint8, data uint32) {
 	}
 
 	// Done Logic
-	if address == 0xFFFC {
+	if (address >> 24) == 0xFF {
 		fmt.Printf("!!!!!!!!!!!!!!!!!!!DONE#0x%08X#!!!!!!!!!!!!!!!!!!!\n", data)
 		prof.Pr.Print()
 		os.Exit(0)
@@ -103,5 +114,15 @@ func (mem Memory) String() string {
 		s = fmt.Sprintf("%s%08X\n", s, mem.data[k].value)
 	}
 	s = fmt.Sprintf("%s-========\n", s)
+
+	for i := uint32(0); i < 4; i++ {
+		d := ""
+		for _, k := range keys {
+			d = fmt.Sprintf("%s%02X\n", d, uint8((mem.data[k].value)>>(8*i)&0xFF))
+		}
+		file := fmt.Sprintf("/tmp/yarc_%d.txt", i)
+		_ = ioutil.WriteFile(file, []byte(d), 0644)
+	}
+
 	return s
 }
