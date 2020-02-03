@@ -32,4 +32,10 @@ var InstructionSet = []Instruction{
 	SLTU,
 	LW,
 	SW,
+	LB,
+	LBU,
+	LH,
+	LHU,
+	SB,
+	SH,
 }

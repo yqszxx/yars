@@ -73,11 +73,48 @@ func (p *Processor) WriteReg(n bv.BitVector, data bv.BitVector) {
 
 func (p *Processor) ReadMemory(address bv.BitVector, mode uint8) bv.BitVector {
 	var data bv.BitVector
+	var part int
 
 	switch mode {
 	case intf.Word:
 		data = p.Mem.Read(address)
+	case intf.HalfWord:
+		if address.Test(1) { // address[1] == 1, high half
+			part = 1
+		} else { // address[1] == 0, low half
+			part = 0
+		}
+		address.Reset(1)
+		data = p.Mem.Read(address)
+		if part == 1 { // part == 1, high half
+			data = data.Sub(31, 16)
+		} else { // part == 0, low half
+			data = data.Sub(15, 0)
+		}
+	case intf.Byte: // byte is always aligned
+		if address.Test(1) && address.Test(0) { // address[1:0] == 0b11, highest byte
+			part = 3
+		} else if address.Test(1) && !address.Test(0) { // address[1:0] == 0b10, second high byte
+			part = 2
+		} else if !address.Test(1) && address.Test(0) { // address[1:0] == 0b01, second low byte
+			part = 1
+		} else { // address[1:0] == 0b00, lowest byte
+			part = 0
+		}
+		address.Reset(1)
+		address.Reset(0)
+		data = p.Mem.Read(address)
+		if part == 3 { // part == 3, highest byte
+			data = data.Sub(31, 24)
+		} else if part == 2 { // part == 2, second high byte
+			data = data.Sub(23, 16)
+		} else if part == 1 { // part == 1, second low byte
+			data = data.Sub(15, 8)
+		} else { // part == 0, lowest byte
+			data = data.Sub(7, 0)
+		}
 	}
+
 	return data
 }
 
@@ -85,5 +122,27 @@ func (p *Processor) WriteMemory(address bv.BitVector, data bv.BitVector, mode ui
 	switch mode {
 	case intf.Word:
 		p.Mem.Write(address, bv.B("1111"), data)
+	case intf.HalfWord:
+		if address.Test(1) { // address[1] == 1, update high half
+			address.Reset(1)
+			p.Mem.Write(address, bv.B("1100"), bv.Cat(data, bv.Bv(16))) // fill low 16 bit0 with 0
+		} else { // address[1] == 0, update low half
+			p.Mem.Write(address, bv.B("0011"), bv.Cat(bv.Bv(16), data)) // fill high 16 bits with 0
+		}
+	case intf.Byte: // byte is always aligned
+		if address.Test(1) && address.Test(0) { // address[1:0] == 0b11, highest byte
+			address.Reset(1)
+			address.Reset(0)
+			p.Mem.Write(address, bv.B("1000"), bv.Cat(data, bv.Bv(24))) // fill low 24 bits with 0
+		} else if address.Test(1) && !address.Test(0) { // address[1:0] == 0b10, second high byte
+			address.Reset(1)
+			p.Mem.Write(address, bv.B("0100"), bv.Cat(bv.Cat(bv.Bv(8), data), bv.Bv(16))) // fill high 8 bits and low 16 bits with 0
+		} else if !address.Test(1) && address.Test(0) { // address[1:0] == 0b01, second low byte
+			address.Reset(0)
+			p.Mem.Write(address, bv.B("0010"), bv.Cat(bv.Cat(bv.Bv(16), data), bv.Bv(8))) // fill high 16 bits and low 8 bits with 0
+		} else { // address[1:0] == 0b00, lowest byte
+			p.Mem.Write(address, bv.B("0001"), bv.Cat(bv.Bv(24), data)) // fill high 24 bits with 0
+		}
 	}
+
 }

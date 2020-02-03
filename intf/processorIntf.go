@@ -5,7 +5,9 @@ import (
 )
 
 const (
-	Word = 3
+	Byte     = 1
+	HalfWord = 2
+	Word     = 3
 )
 
 type ProcessorInterface interface {
