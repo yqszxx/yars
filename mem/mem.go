@@ -120,8 +120,10 @@ func (mem Memory) String() string {
 		for _, k := range keys {
 			d = fmt.Sprintf("%s%02X\n", d, uint8((mem.data[k].value)>>(8*i)&0xFF))
 		}
-		file := fmt.Sprintf("/tmp/yarc_%d.txt", i)
-		_ = ioutil.WriteFile(file, []byte(d), 0644)
+		file := fmt.Sprintf("./build/yarc_%d.txt", i)
+		if err := ioutil.WriteFile(file, []byte(d), 0644); err != nil {
+			log.Println(err)
+		}
 	}
 
 	return s
