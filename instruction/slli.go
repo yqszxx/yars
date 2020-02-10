@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // SLLI is a logical left shift (zeros are shifted into the lower bits). The operand to be shifted

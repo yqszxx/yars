@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // CSRRSI variant is similar to CSRRS, except it updates the CSR using an XLEN-bit value obtained by

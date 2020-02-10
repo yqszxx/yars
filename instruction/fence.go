@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // The FENCE instruction is used to order device I/O and memory accesses as viewed by other RISC-V

@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // The ECALL instruction is used to make a request to the supporting execution environment.

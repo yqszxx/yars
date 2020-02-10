@@ -1,9 +1,9 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
+	"github.com/yqszxx/yars/intf"
 	"log"
-	"yars/bv"
-	"yars/intf"
 )
 
 // The SW instruction stores 32-bit value from the low bits of register rs2 to memory.

@@ -3,12 +3,12 @@ package main
 import (
 	"debug/elf"
 	"fmt"
+	"github.com/yqszxx/yars/instruction"
+	"github.com/yqszxx/yars/mem"
+	"github.com/yqszxx/yars/processor"
+	"github.com/yqszxx/yars/reg"
 	"log"
 	"os"
-	"yars/instruction"
-	"yars/mem"
-	"yars/processor"
-	"yars/reg"
 )
 
 func main() {

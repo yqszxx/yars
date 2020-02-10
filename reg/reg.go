@@ -1,8 +1,8 @@
 package reg
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 type RegisterFile struct {

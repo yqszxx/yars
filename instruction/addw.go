@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // ADDW is an RV64I-only instruction that is defined analogously to ADD, but operates on 32-bit value

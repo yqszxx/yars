@@ -1,8 +1,8 @@
 package instruction
 
 import (
-	"yars/bv"
-	"yars/intf"
+	"github.com/yqszxx/yars/bv"
+	"github.com/yqszxx/yars/intf"
 )
 
 type Instruction struct {

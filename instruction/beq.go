@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // BEQ branch instruction compares two registers. It takes the branch if registers rs1 and rs2 are equal.

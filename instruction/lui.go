@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // LUI (load upper immediate) places the 20-bit U-immediate into bits 31–12 of register

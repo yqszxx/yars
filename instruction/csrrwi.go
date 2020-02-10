@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // CSRRWI variant is similar to CSRRW, except it updates the CSR using an XLEN-bit value obtained by

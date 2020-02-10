@@ -1,9 +1,9 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
+	"github.com/yqszxx/yars/intf"
 	"log"
-	"yars/bv"
-	"yars/intf"
 )
 
 // LHU loads a 16-bit value from memory, then zero-extends to 64-bits before storing in rd.

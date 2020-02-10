@@ -1,9 +1,9 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
+	"github.com/yqszxx/yars/intf"
 	"log"
-	"yars/bv"
-	"yars/intf"
 )
 
 // LH loads a 64-bit value from memory, then stores in rd.

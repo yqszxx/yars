@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // SRAIW is an RV64I-only instruction that is analogously defined but operates on 32-bit values and

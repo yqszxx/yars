@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // The CSRRC (Atomic Read and Clear Bits in CSR) instruction reads the value of the CSR, zero-

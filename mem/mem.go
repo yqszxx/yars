@@ -2,10 +2,10 @@ package mem
 
 import (
 	"fmt"
+	"github.com/yqszxx/yars/bv"
 	"log"
 	"os"
 	"sort"
-	"yars/bv"
 )
 
 type memoryCell struct {

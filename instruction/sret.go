@@ -1,9 +1,9 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
+	"github.com/yqszxx/yars/intf"
 	"log"
-	"yars/bv"
-	"yars/intf"
 )
 
 // The SRET instruction is used to return from traps in S-mode.

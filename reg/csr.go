@@ -1,8 +1,8 @@
 package reg
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 var csrAddress = map[string]uint16{

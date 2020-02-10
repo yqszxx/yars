@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // The CSRRW (Atomic Read/Write CSR) instruction atomically swaps values in the CSRs and integer

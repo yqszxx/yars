@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // ADDI adds the sign-extended 12-bit immediate to register rs1. Arithmetic overflow is ignored and

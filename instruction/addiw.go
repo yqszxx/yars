@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // ADDIW is an RV64I-only instruction that adds the sign-extended 12-bit immediate to register rs1

@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // ADD performs addition. Overflow is ignored and the low 64 bits of results are written to the

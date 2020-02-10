@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // CSRRCI variant is similar to CSRRC, except it updates the CSR using an XLEN-bit value obtained by

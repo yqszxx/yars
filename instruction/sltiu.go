@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // SLTIU (set less than immediate unsigned) places the value 1 in register rd if register rs1 is less

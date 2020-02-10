@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // ORI is a logical operation that performs bitwise OR on register rs1 and the sign-extended
