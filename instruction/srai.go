@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // SRAI is an arithmetic right shift (the original sign bit is copied into the vacated upper bits).

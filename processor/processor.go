@@ -1,13 +1,13 @@
 package processor
 
 import (
+	"github.com/yqszxx/yars/bv"
+	"github.com/yqszxx/yars/instruction"
+	"github.com/yqszxx/yars/intf"
+	"github.com/yqszxx/yars/mem"
+	"github.com/yqszxx/yars/prof"
+	"github.com/yqszxx/yars/reg"
 	"log"
-	"yars/bv"
-	"yars/instruction"
-	"yars/intf"
-	"yars/mem"
-	"yars/prof"
-	"yars/reg"
 )
 
 type Processor struct {

@@ -1,7 +1,7 @@
 package intf
 
 import (
-	"yars/bv"
+	"github.com/yqszxx/yars/bv"
 )
 
 const (

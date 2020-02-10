@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // JAL (jump and link) uses the J-type format, where the J-immediate encodes a signed offset

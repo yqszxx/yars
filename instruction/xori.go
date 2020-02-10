@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // XORI is a logical operation that performs bitwise XOR on register rs1 and the sign-extended

@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // BGEU branch instruction compares two registers. It takes the branch if rs1 is greater than or equal

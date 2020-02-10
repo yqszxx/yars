@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // AUIPC (add upper immediate to pc) appends 12 low-order zero bits to the 20-bit U-immediate,

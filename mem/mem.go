@@ -2,12 +2,12 @@ package mem
 
 import (
 	"fmt"
+	"github.com/yqszxx/yars/bv"
+	"github.com/yqszxx/yars/prof"
 	"io/ioutil"
 	"log"
 	"os"
 	"sort"
-	"yars/bv"
-	"yars/prof"
 )
 
 type memoryCell struct {
@@ -49,7 +49,6 @@ func (mem *Memory) WriteInt(address uint32, mask uint8, data uint32) {
 		} else {
 			fmt.Printf("!LOW!\n")
 		}
-		return
 	}
 
 	// Print Logic

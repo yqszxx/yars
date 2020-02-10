@@ -1,8 +1,8 @@
 package instruction
 
 import (
+	"github.com/yqszxx/yars/bv"
 	"log"
-	"yars/bv"
 )
 
 // SLTU (set less than) performs unsigned compare, writing 1 to rd if rs1 < rs2, 0 otherwise.
